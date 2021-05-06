@@ -1,13 +1,13 @@
-// import 'core-js/stable';
-// import 'regenerator-runtime/runtime';
-
-// import style from "./style.css";
-// console.log(style);
+import React from "react";
+import ReactDom from "react-dom";
 import _ from "lodash";
-import $ from "jquery";
-import { ui } from "./jquery.ui";
 
-ui();
-const dom = $('<div>');
-dom.html(_.join(['dell', 'lee'], '___'));
-$('body').append(dom);
+function App(){
+    return (
+        <div>
+            <div>{_.join(['This', 'is', 'App'], ' ')}</div>
+        </div>
+    );
+};
+
+ReactDom.render(<App />, document.getElementById('root'));

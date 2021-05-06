@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 
@@ -7,8 +8,16 @@ module.exports = {
     entry: {
         main: "./src/index.js",
     },
+    resolve: {
+        extensions: ['.js', '.jsx'],
+    },
     module: {
         rules: [
+            {                
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                use: ['babel-loader']
+            },
             {
                 test: /\.css$/,
                 use: [
@@ -66,14 +75,14 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./src/index.html",
         }),
+        new AddAssetHtmlPlugin({filepath: path.resolve(__dirname, '../dll/vendors.dll.js')}),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[name].chunk.css"
         }),
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            _: 'lodash',
-        }),
+        new webpack.DllReferencePlugin({
+            manifest: path.resolve(__dirname, '../dll/vendors.manifest.json')
+        })
     ],
     optimization:{
         usedExports: true,
